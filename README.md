@@ -13,3 +13,10 @@ const AnimatedAlert = ({ isOpen, ...rest }) => (
   </HeightTransition>
 );
 ```
+
+## Alternatives
+
+This compnonent is intentionally simple. For more sophisticated alternatives that react to changing content height, checkout:
+
+- https://github.com/Stanko/react-animate-height
+- https://github.com/nkbt/react-collapse
