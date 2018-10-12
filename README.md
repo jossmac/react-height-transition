@@ -1,6 +1,6 @@
 # React Height Transition
 
-Animate height when children mount/unmount.
+Animate height when children mount and unmount.
 
 https://jossmac.github.io/react-height-transition
 
