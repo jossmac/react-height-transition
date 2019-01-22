@@ -5,19 +5,19 @@ import NodeResolver from 'react-node-resolver';
 import { Transition, TransitionGroup } from 'react-transition-group';
 
 type Height = number | string;
+
 type Props = {
   alpha: boolean,
   children: Element<*>,
   initial: Height,
+  duration: number | string,
+  easing: string,
   onChange?: Height => any,
   tag: string,
 };
+
 type State = { height: Height };
 
-function getStyle(element, key, parse) {
-  const style = element.currentStyle || window.getComputedStyle(element);
-  return key ? (parse ? parseInt(style[key]) : style[key]) : style;
-}
 function uniqueId() {
   return Math.random()
     .toString(36)
@@ -26,8 +26,17 @@ function uniqueId() {
 
 export default class HeightTransition extends Component<Props, State> {
   childId = uniqueId();
+
   state = { height: this.props.initial };
-  static defaultProps = { alpha: true, initial: 0, tag: 'div' };
+
+  static defaultProps = {
+    alpha: true,
+    initial: 0,
+    duration: 220,
+    easing: 'cubic-bezier(0.2, 0, 0, 1)',
+    tag: 'div'
+  };
+
   getNode = (ref: HTMLElement) => {
     const { initial, onChange } = this.props;
     const height = ref ? ref.scrollHeight : initial;
@@ -38,24 +47,26 @@ export default class HeightTransition extends Component<Props, State> {
       });
     }
   };
+
   render() {
-    const { alpha, children, tag: Tag } = this.props;
+    const { alpha, children, initial, duration, easing } = this.props;
     const { height } = this.state;
     const base = {
-      transition: 'height 220ms cubic-bezier(0.2, 0, 0, 1), opacity 220ms',
+      transition: `height ${duration}ms ${easing}, opacity ${duration}ms`,
     };
+    const opacity = alpha ? 0 : 1;
     const transition = {
-      entering: { height, opacity: alpha ? 0 : 1 },
+      entering: { height, opacity },
       entered: { height, opacity: 1 },
-      exiting: { height: this.props.initial, opacity: alpha ? 0 : 1 },
-      exited: { height: this.props.initial, opacity: alpha ? 0 : 1 },
+      exiting: { height: initial, opacity },
+      exited: { height: initial, opacity },
     };
 
     return (
       <TransitionGroup component={null}>
         {children ? (
           <Transition
-            timeout={220}
+            timeout={duration}
             appear
             mountOnEnter
             unmountOnExit

@@ -8,7 +8,7 @@ https://jossmac.github.io/react-height-transition
 import HeightTransition from 'react-height-transition';
 
 const AnimatedAlert = ({ isOpen, ...rest }) => (
-  <HeightTransition initial={0}>
+  <HeightTransition initial={0} duration={400} easing="ease-in-out">
     {isOpen ? <Alert {...rest} /> : null}
   </HeightTransition>
 );
